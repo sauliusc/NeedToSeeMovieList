@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<ArrayOfMovieItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <MovieItem>
+    <Title>Komedija</Title>
+    <Type>Comedy</Type>
+    <Seen>true</Seen>
+    <CreateDate>2016-10-25T00:03:54.8821466+03:00</CreateDate>
+    <SeenTime>2016-10-25T21:39:11.9000569+03:00</SeenTime>
+    <Duration xsi:nil="true" />
+    <Ratio>4</Ratio>
+    <Priority>0</Priority>
+    <Guid>ca36c1c6-c695-4187-8182-55348b565934</Guid>
+  </MovieItem>
+  <MovieItem>
+    <Title>Mind</Title>
+    <Type>MindFuck</Type>
+    <Seen>false</Seen>
+    <CreateDate>2016-10-25T00:04:14.0771234+03:00</CreateDate>
+    <SeenTime xsi:nil="true" />
+    <Duration>2016-10-25T03:00:00</Duration>
+    <Ratio>9</Ratio>
+    <Priority>3</Priority>
+    <Guid>0be21ae3-2344-4aab-8f15-de419d3c7738</Guid>
+  </MovieItem>
+  <MovieItem>
+    <Title>Drama</Title>
+    <Type>Drama</Type>
+    <Seen>true</Seen>
+    <CreateDate>2016-10-25T00:03:43.2061563+03:00</CreateDate>
+    <SeenTime>2016-10-25T00:04:33.0070047+03:00</SeenTime>
+    <Duration xsi:nil="true" />
+    <Ratio>5</Ratio>
+    <Priority>5</Priority>
+    <Guid>0001b6d3-02fa-488c-b44a-3f652eb2c590</Guid>
+  </MovieItem>
+  <MovieItem>
+    <Title>fantastic</Title>
+    <Type>Fantastic</Type>
+    <Seen>true</Seen>
+    <CreateDate>2016-10-25T00:04:04.241282+03:00</CreateDate>
+    <SeenTime>2016-10-25T00:04:25.1516498+03:00</SeenTime>
+    <Duration xsi:nil="true" />
+    <Ratio>4</Ratio>
+    <Priority>7</Priority>
+    <Guid>3bebc0a4-e31c-4e26-a041-5600241374d8</Guid>
+  </MovieItem>
+</ArrayOfMovieItem>

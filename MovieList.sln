@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieList.Core", "MovieList.Core\MovieList.Core.csproj", "{1258CEDE-3C94-469F-9761-BFB5D5E224B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieList.GUI", "MovieList.GUI\MovieList.GUI.csproj", "{9215C2DE-83FD-4DD5-AE77-BAE119C91385}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieList.DB.File", "MovieList.DB.File\MovieList.DB.File.csproj", "{CC1E5A12-C5F4-4C42-8A17-CDF6AD573C07}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1258CEDE-3C94-469F-9761-BFB5D5E224B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1258CEDE-3C94-469F-9761-BFB5D5E224B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1258CEDE-3C94-469F-9761-BFB5D5E224B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1258CEDE-3C94-469F-9761-BFB5D5E224B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9215C2DE-83FD-4DD5-AE77-BAE119C91385}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9215C2DE-83FD-4DD5-AE77-BAE119C91385}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9215C2DE-83FD-4DD5-AE77-BAE119C91385}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9215C2DE-83FD-4DD5-AE77-BAE119C91385}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC1E5A12-C5F4-4C42-8A17-CDF6AD573C07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC1E5A12-C5F4-4C42-8A17-CDF6AD573C07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC1E5A12-C5F4-4C42-8A17-CDF6AD573C07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC1E5A12-C5F4-4C42-8A17-CDF6AD573C07}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

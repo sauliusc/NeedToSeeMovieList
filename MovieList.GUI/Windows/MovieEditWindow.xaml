@@ -1,0 +1,109 @@
+﻿<Window
+    x:Class="MovieList.GUI.Windows.MovieEditWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:MovieList.GUI.Windows"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    x:Name="editForm"
+    Title="Add/Update movie"
+    Width="600"
+    Height="300"
+    DataContext="{Binding MovieEditViewModel, Source={StaticResource Locator}}"
+    mc:Ignorable="d">
+    <Grid DataContext="{Binding EditableItem}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Label
+            Grid.Row="0"
+            Grid.Column="0"
+            Content="Title" />
+        <TextBox
+            Grid.Row="0"
+            Grid.Column="1"
+            TextWrapping="Wrap">
+            <TextBox.Text>
+                <Binding Path="Title" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <ExceptionValidationRule />
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <Label
+            Grid.Row="1"
+            Grid.Column="0"
+            Content="Type" />
+        <ComboBox
+            Grid.Row="1"
+            Grid.Column="1"
+            ItemsSource="{Binding Source={StaticResource movieTypesSelector}}"
+            SelectedItem="{Binding Type}" />
+        <Label
+            Grid.Row="2"
+            Grid.Column="0"
+            Content="Duration" />
+        <xctk:TimePicker
+            Grid.Row="2"
+            Grid.Column="1"
+            Value="{Binding Duration}" />
+        <Label
+            Grid.Row="3"
+            Grid.Column="0"
+            Content="Priority" />
+        <xctk:IntegerUpDown
+            Grid.Row="3"
+            Grid.Column="1"
+            AllowTextInput="False"
+            DefaultValue="10"
+            DisplayDefaultValueOnEmptyText="True"
+            Value="{Binding Priority}" />
+        <Label
+            Grid.Row="4"
+            Grid.Column="0"
+            Content="Description url" />
+        <TextBox
+            Grid.Row="4"
+            Grid.Column="1"
+            Text="{Binding DescriptionUrl}"
+            TextWrapping="Wrap" />
+        <Label
+            Grid.Row="5"
+            Grid.Column="0"
+            Content="File url" />
+        <TextBox
+            Grid.Row="5"
+            Grid.Column="1"
+            Text="{Binding FileUrl}"
+            TextWrapping="Wrap" />
+        <Grid
+            Grid.Row="6"
+            Grid.Column="0"
+            Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Command="{Binding Path=DataContext.AddItemCommand, ElementName=editForm}">
+                <Image Source="/MovieList.GUI;component/Resources/Save32x32.png" />
+            </Button>
+
+            <Button Grid.Column="1" Command="{Binding Path=DataContext.RemoveItemCommand, ElementName=editForm}">
+                <Image Source="/MovieList.GUI;component/Resources/Delete32x32.png" />
+            </Button>
+        </Grid>
+    </Grid>
+</Window>
