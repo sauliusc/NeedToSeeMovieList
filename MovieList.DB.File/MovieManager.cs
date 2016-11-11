@@ -15,7 +15,7 @@ namespace MovieList.DB.File
     {
         #region Members
         SerializeHelper _szHelper;
-        const string _storageFile = @"c:\Codding\MovieList\Data\File.DB\MovieDB.xml";
+        const string _storageFile = @"..\..\..\Data\File.DB\MovieDB.xml";
         IList<MovieItem> _allMovieList;
 
         #endregion Members
