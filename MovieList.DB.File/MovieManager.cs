@@ -40,7 +40,7 @@ namespace MovieList.DB.File
 
         public bool DeleteItem(MovieItem movie)
         {
-            var movieToRemove = _allMovieList.FirstOrDefault(item => item.Guid == movie.Guid);
+            var movieToRemove = _allMovieList.FirstOrDefault(item => item.Id == movie.Id);
             _allMovieList.Remove(movieToRemove);
             return UpdateList(_allMovieList);
         }
@@ -69,7 +69,7 @@ namespace MovieList.DB.File
 
         public bool UpdateItem(MovieItem movie)
         {
-            var movieToRemove = _allMovieList.FirstOrDefault(item => item.Guid == movie.Guid);
+            var movieToRemove = _allMovieList.FirstOrDefault(item => item.Id == movie.Id);
             _allMovieList.Remove(movieToRemove);
             _allMovieList.Add(movie);
             return UpdateList(_allMovieList);

@@ -31,6 +31,13 @@ namespace MovieList.GUI
         {
             InitializeComponent();
             Messenger.Default.Register<NavigateMessage>(this, Navigate);
+            AppDomain currentDomain = AppDomain.CurrentDomain;
+            currentDomain.UnhandledException += CurrentDomain_UnhandledException;
+        }
+
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            Messenger.Default.Send<ExceptionMessage>(new ExceptionMessage(e.ExceptionObject as Exception));
         }
 
         private void Navigate(NavigateMessage message)

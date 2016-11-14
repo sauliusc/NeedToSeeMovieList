@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
@@ -52,6 +51,14 @@ namespace MovieList.GUI.ViewModel
 
         public bool ShowAll { get; set; }
 
+        GuiObjectMapper GuiMapper
+        {
+            get
+            {
+                return SimpleIoc.Default.GetInstance<GuiObjectMapper>();
+            }
+        }
+
         #endregion Properties
 
         #region Constructors
@@ -62,11 +69,6 @@ namespace MovieList.GUI.ViewModel
             AddNewItemCommand = new RelayCommand(AddNewItem);
             MarkAsSeenCommand = new RelayCommand<MovieItemModel>(MarkAsSeen);
             EditItemCommand = new RelayCommand<MovieItemModel>(EditItem);
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<MovieItem, MovieItemModel>();
-                cfg.CreateMap<MovieItemModel, MovieItem>();
-            });
             ShowAll = false;
             ReloadDataSource();
             Messenger.Default.Register<NavigateMessage>(this, Navigate);
@@ -95,7 +97,7 @@ namespace MovieList.GUI.ViewModel
         {
             parameter.Seen = true;
             parameter.SeenTime = DateTime.Now;
-            _movieManager.UpdateItem(Mapper.Map<MovieItem>(parameter));
+            _movieManager.UpdateItem(GuiMapper.Mapper.Map<MovieItem>(parameter));
             ReloadDataSource();
         }
 
@@ -118,33 +120,39 @@ namespace MovieList.GUI.ViewModel
 
         private void ReloadDataSource()
         {
-            IList<MovieItem> movies;
-            MovieTypes? selectedType = null;
-            if (FilterType is MovieTypes)
-                selectedType = (MovieTypes?)FilterType;
-            if (this.ShowAll)
-            {
-                if (string.IsNullOrEmpty(SearchText) && !selectedType.HasValue)
+            try {
+                IList<MovieItem> movies;
+                MovieTypes? selectedType = null;
+                if (FilterType is MovieTypes)
+                    selectedType = (MovieTypes?)FilterType;
+                if (this.ShowAll)
                 {
-                    movies = _movieManager.GetAllMovies();
+                    if (string.IsNullOrEmpty(SearchText) && !selectedType.HasValue)
+                    {
+                        movies = _movieManager.GetAllMovies();
+                    }
+                    else
+                    {
+                        movies = _movieManager.FilterAllMovies(SearchText, selectedType);
+                    }
                 }
                 else
                 {
-                    movies = _movieManager.FilterAllMovies(SearchText, selectedType);
+                    if (string.IsNullOrEmpty(SearchText) && !selectedType.HasValue)
+                    {
+                        movies = _movieManager.GetAllUnseenMovies();
+                    }
+                    else
+                    {
+                        movies = _movieManager.FilterAllUnseenMovies(SearchText, selectedType);
+                    }
                 }
+                MovieSource = GuiMapper.Mapper.Map<IList<MovieItem>, ObservableCollection<MovieItemModel>>(movies);
             }
-            else
+            catch (Exception ex)
             {
-                if (string.IsNullOrEmpty(SearchText) && !selectedType.HasValue)
-                {
-                    movies = _movieManager.GetAllUnseenMovies();
-                }
-                else
-                {
-                    movies = _movieManager.FilterAllUnseenMovies(SearchText, selectedType);
-                }
+                Messenger.Default.Send<ExceptionMessage>(new ExceptionMessage(ex));
             }
-            MovieSource = Mapper.Map<IList<MovieItem>, ObservableCollection<MovieItemModel>>(movies);
         }
 
         #endregion Methods

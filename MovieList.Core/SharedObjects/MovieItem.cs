@@ -18,7 +18,7 @@ namespace MovieList.Core.SharedObjects
 
         public string FileUrl { get; set; }
 
-        public string Guid { get; set; }
+        public Guid Id { get; set; }
 
         public int Priority { get; set; }
 

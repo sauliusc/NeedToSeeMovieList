@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieList.GUI", "MovieList.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieList.DB.File", "MovieList.DB.File\MovieList.DB.File.csproj", "{CC1E5A12-C5F4-4C42-8A17-CDF6AD573C07}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieList.DB.Mongo", "MovieList.DB.Mongo\MovieList.DB.Mongo.csproj", "{3A34ED2E-F41C-47EE-854A-DE3D1309D0C9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{CC1E5A12-C5F4-4C42-8A17-CDF6AD573C07}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC1E5A12-C5F4-4C42-8A17-CDF6AD573C07}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC1E5A12-C5F4-4C42-8A17-CDF6AD573C07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A34ED2E-F41C-47EE-854A-DE3D1309D0C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A34ED2E-F41C-47EE-854A-DE3D1309D0C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A34ED2E-F41C-47EE-854A-DE3D1309D0C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A34ED2E-F41C-47EE-854A-DE3D1309D0C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

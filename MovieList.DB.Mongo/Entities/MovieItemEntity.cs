@@ -1,17 +1,15 @@
-﻿using MovieList.Core.SharedObjects;
-using PostSharp.Patterns.Contracts;
-using PostSharp.Patterns.Model;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.IdGenerators;
+using MovieList.Core.SharedObjects;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MovieList.GUI.Models
+namespace MovieList.DB.Mongo.Entities
 {
-    [NotifyPropertyChanged]
-    public class MovieItemModel
+    public class MovieItemEntity
     {
         #region Properties
 
@@ -22,7 +20,7 @@ namespace MovieList.GUI.Models
         public DateTime? Duration { get; set; }
 
         public string FileUrl { get; set; }
-
+        [BsonId(IdGenerator = typeof(GuidGenerator))]
         public Guid Id { get; set; }
 
         public int Priority { get; set; }
@@ -33,21 +31,10 @@ namespace MovieList.GUI.Models
 
         public DateTime? SeenTime { get; set; }
 
-        [Required]
         public MovieTypes Type { get; set; }
 
-        [Required]
         public string Title { get; set; }
 
-        #endregion Properties
-
-        #region Methods
-
-        public override string ToString()
-        {
-            return string.Format("{0} ({1:HH:MM}) - {2}", Title, Duration, Priority);
-        }
-
-        #endregion Methods
+#endregion Properties
     }
 }

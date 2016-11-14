@@ -3,8 +3,9 @@ using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Practices.ServiceLocation;
 using MovieList.Core.Interfaces;
-using MovieList.DB.File;
+using MovieList.GUI.Navigation;
 using System.Windows;
+using System;
 
 namespace MovieList.GUI.ViewModel
 {
@@ -56,8 +57,11 @@ namespace MovieList.GUI.ViewModel
 
             SimpleIoc.Default.Register<MovieViewModel>();
             SimpleIoc.Default.Register<MovieEditViewModel>();
-            SimpleIoc.Default.Register<IMovieManager, MovieManager>();
-            Messenger.Default.Register<NotificationMessage>(this, NotifyUserMethod);
+            SimpleIoc.Default.Register<GuiObjectMapper>();
+            //SimpleIoc.Default.Register<IMovieManager, MovieList.DB.File.MovieManager>();
+            SimpleIoc.Default.Register<IMovieManager, DB.Mongo.MovieManagerSync>();
+            Messenger.Default.Register<NotificationMessage>(this, NotifyUserMessage);
+            Messenger.Default.Register<ExceptionMessage>(this, NotifyUserExeption);
         }
 
         #endregion Constructors
@@ -69,9 +73,14 @@ namespace MovieList.GUI.ViewModel
             // TODO Clear the ViewModels
         }
 
-        private void NotifyUserMethod(NotificationMessage message)
+        private void NotifyUserMessage(NotificationMessage message)
         {
             MessageBox.Show(message.Notification);
+        }
+
+        private void NotifyUserExeption(ExceptionMessage exception)
+        {
+            MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         #endregion Methods

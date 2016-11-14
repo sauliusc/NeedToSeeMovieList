@@ -26,6 +26,14 @@ namespace MovieList.GUI.ViewModel
 
         public RelayCommand RemoveItemCommand { get; set; }
 
+        GuiObjectMapper GuiMapper
+        {
+            get
+            {
+                return SimpleIoc.Default.GetInstance<GuiObjectMapper>();
+            }
+        }
+
         #endregion Properties
 
         #region Constructors
@@ -42,23 +50,28 @@ namespace MovieList.GUI.ViewModel
 
         private void AddItem()
         {
-            throw new Exception("444");
-            if (string.IsNullOrEmpty(EditableItem.Guid))
+            try
             {
-                EditableItem.Guid = Guid.NewGuid().ToString();
-                EditableItem.CreateDate = DateTime.Now;
-                SimpleIoc.Default.GetInstance<IMovieManager>().AddNewItem(Mapper.Map<MovieItem>(EditableItem));
-            }
-            else
+                if (EditableItem.Id == Guid.Empty)
+                {
+                    EditableItem.Id = Guid.NewGuid();
+                    EditableItem.CreateDate = DateTime.Now;
+                    SimpleIoc.Default.GetInstance<IMovieManager>().AddNewItem(GuiMapper.Mapper.Map<MovieItem>(EditableItem));
+                }
+                else
+                {
+                    SimpleIoc.Default.GetInstance<IMovieManager>().UpdateItem(GuiMapper.Mapper.Map<MovieItem>(EditableItem));
+                }
+                Messenger.Default.Send<NavigateMessage>(new NavigateMessage(WindowAction.Close));
+            } catch (Exception ex)
             {
-                SimpleIoc.Default.GetInstance<IMovieManager>().UpdateItem(Mapper.Map<MovieItem>(EditableItem));
+                Messenger.Default.Send<NotificationMessage>(new NotificationMessage(ex.Message));
             }
-            Messenger.Default.Send<NavigateMessage>(new NavigateMessage(WindowAction.Close));
         }
 
         private void RemoveItem()
         {
-            SimpleIoc.Default.GetInstance<IMovieManager>().DeleteItem(Mapper.Map<MovieItem>(EditableItem));
+            SimpleIoc.Default.GetInstance<IMovieManager>().DeleteItem(GuiMapper.Mapper.Map<MovieItem>(EditableItem));
             Messenger.Default.Send<NavigateMessage>(new NavigateMessage(WindowAction.Close));
         }
 

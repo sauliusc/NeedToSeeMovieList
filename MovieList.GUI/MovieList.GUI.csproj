@@ -130,6 +130,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\MovieTypeImageConverter.cs" />
+    <Compile Include="GuiObjectMapper.cs" />
+    <Compile Include="Navigation\ExceptionMessage.cs" />
     <Compile Include="Navigation\NavigateMessage.cs" />
     <Compile Include="Navigation\WindowAction.cs" />
     <Compile Include="ViewModel\MovieEditViewModel.cs" />
@@ -197,6 +199,10 @@
     <ProjectReference Include="..\MovieList.DB.File\MovieList.DB.File.csproj">
       <Project>{cc1e5a12-c5f4-4c42-8a17-cdf6ad573c07}</Project>
       <Name>MovieList.DB.File</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MovieList.DB.Mongo\MovieList.DB.Mongo.csproj">
+      <Project>{3a34ed2e-f41c-47ee-854a-de3d1309d0c9}</Project>
+      <Name>MovieList.DB.Mongo</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
