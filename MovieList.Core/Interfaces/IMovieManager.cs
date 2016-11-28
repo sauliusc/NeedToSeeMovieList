@@ -9,12 +9,13 @@ namespace MovieList.Core.Interfaces
 {
     public interface IMovieManager
     {
-        IList<MovieItem> GetAllMovies();
-        IList<MovieItem> GetAllUnseenMovies();
-        IList<MovieItem> FilterAllMovies(string namePart, MovieTypes? movieType);
-        IList<MovieItem> FilterAllUnseenMovies(string namePart, MovieTypes? movieType);
-        bool AddNewItem(MovieItem movie);
-        bool DeleteItem(MovieItem movie);
-        bool UpdateItem(MovieItem movie);
+        Task<IList<MovieItem>> GetAllMovies();
+        Task<IList<MovieItem>> GetAllUnseenMovies();
+        Task<IList<MovieItem>> FilterAllMovies(string namePart, MovieTypes? movieType);
+        Task<IList<MovieItem>> FilterAllUnseenMovies(string namePart, MovieTypes? movieType);
+        Task AddNewItem(MovieItem movie);
+        Task DeleteItem(MovieItem movie);
+        Task UpdateItem(MovieItem movie);
+        Task ClearAll();
     }
 }

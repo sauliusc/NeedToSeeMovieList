@@ -58,8 +58,8 @@ namespace MovieList.GUI.ViewModel
             SimpleIoc.Default.Register<MovieViewModel>();
             SimpleIoc.Default.Register<MovieEditViewModel>();
             SimpleIoc.Default.Register<GuiObjectMapper>();
-            //SimpleIoc.Default.Register<IMovieManager, MovieList.DB.File.MovieManager>();
-            SimpleIoc.Default.Register<IMovieManager, DB.Mongo.MovieManagerSync>();
+            SimpleIoc.Default.Register<IMovieManager, MovieList.DB.File.MovieManager>();
+            //SimpleIoc.Default.Register<IMovieManager, DB.Mongo.MovieManager>();
             Messenger.Default.Register<NotificationMessage>(this, NotifyUserMessage);
             Messenger.Default.Register<ExceptionMessage>(this, NotifyUserExeption);
         }

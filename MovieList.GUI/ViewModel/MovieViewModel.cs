@@ -50,6 +50,7 @@ namespace MovieList.GUI.ViewModel
         public string SearchText { get; set; }
 
         public bool ShowAll { get; set; }
+        public string Status { get; set; }
 
         GuiObjectMapper GuiMapper
         {
@@ -103,7 +104,7 @@ namespace MovieList.GUI.ViewModel
 
         private void Navigate(NavigateMessage message)
         {
-            if (message.WindowAction == WindowAction.Close)
+            if (message.WindowAction == WindowAction.ReloadDataSource)
             {
                 ReloadDataSource();
             }
@@ -118,9 +119,11 @@ namespace MovieList.GUI.ViewModel
             }
         }
 
-        private void ReloadDataSource()
+        private async void ReloadDataSource()
         {
-            try {
+            try
+            {
+                Status = "Loading";
                 IList<MovieItem> movies;
                 MovieTypes? selectedType = null;
                 if (FilterType is MovieTypes)
@@ -129,25 +132,30 @@ namespace MovieList.GUI.ViewModel
                 {
                     if (string.IsNullOrEmpty(SearchText) && !selectedType.HasValue)
                     {
-                        movies = _movieManager.GetAllMovies();
+                        movies = await _movieManager.GetAllMovies();
                     }
                     else
                     {
-                        movies = _movieManager.FilterAllMovies(SearchText, selectedType);
+                        movies = await _movieManager.FilterAllMovies(SearchText, selectedType);
                     }
                 }
                 else
                 {
                     if (string.IsNullOrEmpty(SearchText) && !selectedType.HasValue)
                     {
-                        movies = _movieManager.GetAllUnseenMovies();
+                        movies = await _movieManager.GetAllUnseenMovies();
                     }
                     else
                     {
-                        movies = _movieManager.FilterAllUnseenMovies(SearchText, selectedType);
+                        movies = await _movieManager.FilterAllUnseenMovies(SearchText, selectedType);
                     }
                 }
                 MovieSource = GuiMapper.Mapper.Map<IList<MovieItem>, ObservableCollection<MovieItemModel>>(movies);
+                Status = string.Empty;
+            }
+            catch (OperationCanceledException)
+            {
+                Console.WriteLine("======================================================");
             }
             catch (Exception ex)
             {

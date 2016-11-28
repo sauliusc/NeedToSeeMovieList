@@ -35,4 +35,15 @@
     <Type>Comedy</Type>
     <Title>2komedija</Title>
   </MovieItem>
+  <MovieItem>
+    <CreateDate>2016-11-23T22:45:44.7030019+02:00</CreateDate>
+    <Duration>2016-11-23T03:00:00</Duration>
+    <Id>1a7f6a76-b114-45c4-8a13-019f936b0fe9</Id>
+    <Priority>5</Priority>
+    <Ratio>0</Ratio>
+    <Seen>true</Seen>
+    <SeenTime>2016-11-23T22:45:51.2496804+02:00</SeenTime>
+    <Type>Drama</Type>
+    <Title>125</Title>
+  </MovieItem>
 </ArrayOfMovieItem>

@@ -22,6 +22,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
@@ -90,6 +91,6 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-
+        <TextBlock Grid.Row="2" Text="{Binding Status}" />
     </Grid>
 </Window>

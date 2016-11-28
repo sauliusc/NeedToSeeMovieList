@@ -48,31 +48,36 @@ namespace MovieList.GUI.ViewModel
 
         #region Methods
 
-        private void AddItem()
+        private async void AddItem()
         {
             try
             {
+                Task itemUpdateTask;
                 if (EditableItem.Id == Guid.Empty)
                 {
                     EditableItem.Id = Guid.NewGuid();
                     EditableItem.CreateDate = DateTime.Now;
-                    SimpleIoc.Default.GetInstance<IMovieManager>().AddNewItem(GuiMapper.Mapper.Map<MovieItem>(EditableItem));
+                    itemUpdateTask = SimpleIoc.Default.GetInstance<IMovieManager>().AddNewItem(GuiMapper.Mapper.Map<MovieItem>(EditableItem));
                 }
                 else
                 {
-                    SimpleIoc.Default.GetInstance<IMovieManager>().UpdateItem(GuiMapper.Mapper.Map<MovieItem>(EditableItem));
+                    itemUpdateTask = SimpleIoc.Default.GetInstance<IMovieManager>().UpdateItem(GuiMapper.Mapper.Map<MovieItem>(EditableItem));
                 }
                 Messenger.Default.Send<NavigateMessage>(new NavigateMessage(WindowAction.Close));
+                await itemUpdateTask;
+                Messenger.Default.Send<NavigateMessage>(new NavigateMessage(WindowAction.ReloadDataSource));
             } catch (Exception ex)
             {
-                Messenger.Default.Send<NotificationMessage>(new NotificationMessage(ex.Message));
+                Messenger.Default.Send<ExceptionMessage>(new ExceptionMessage(ex));
             }
         }
 
-        private void RemoveItem()
+        private async void RemoveItem()
         {
-            SimpleIoc.Default.GetInstance<IMovieManager>().DeleteItem(GuiMapper.Mapper.Map<MovieItem>(EditableItem));
+            Task removeItemTask = SimpleIoc.Default.GetInstance<IMovieManager>().DeleteItem(GuiMapper.Mapper.Map<MovieItem>(EditableItem));
             Messenger.Default.Send<NavigateMessage>(new NavigateMessage(WindowAction.Close));
+            await removeItemTask;
+            Messenger.Default.Send<NavigateMessage>(new NavigateMessage(WindowAction.ReloadDataSource));
         }
 
         #endregion Methods

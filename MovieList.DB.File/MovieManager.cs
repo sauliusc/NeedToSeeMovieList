@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MovieList.DB.File
@@ -17,6 +18,7 @@ namespace MovieList.DB.File
         SerializeHelper _szHelper;
         const string _storageFile = @"..\..\..\Data\File.DB\MovieDB.xml";
         IList<MovieItem> _allMovieList;
+        private CancellationTokenSource _cancellationTokenSource;
 
         #endregion Members
 
@@ -25,62 +27,104 @@ namespace MovieList.DB.File
         public MovieManager()
         {
             _szHelper = new SerializeHelper();
-            _allMovieList = GetAllMovies();
+            LoadListFromFile();
         }
 
         #endregion Constructors
 
-        #region Methods
+        #region Public Methods
 
-        public bool AddNewItem(MovieItem movie)
+        public Task AddNewItem(MovieItem movie)
         {
-            _allMovieList.Add(movie);
-            return UpdateList(_allMovieList);
+            return GetVoidActionTask(() =>
+            {
+                _allMovieList.Add(movie);
+                UpdateList(_allMovieList);
+            });
         }
 
-        public bool DeleteItem(MovieItem movie)
+        public Task ClearAll()
         {
-            var movieToRemove = _allMovieList.FirstOrDefault(item => item.Id == movie.Id);
-            _allMovieList.Remove(movieToRemove);
-            return UpdateList(_allMovieList);
+            return GetVoidActionTask(() => _szHelper.SerializeObject<IList<MovieItem>>(new List<MovieItem>(), _storageFile));
         }
 
-        public IList<MovieItem> FilterAllMovies(string namePart, MovieTypes? movieType)
+        public Task DeleteItem(MovieItem movie)
         {
-            return _allMovieList.Where(item => String.IsNullOrEmpty(namePart) || item.Title.ToUpper().Contains(namePart.ToUpper())).Where(fType => !movieType.HasValue || fType.Type == movieType.Value).ToList<MovieItem>();
+            return GetVoidActionTask(() =>
+            {
+                var movieToRemove = _allMovieList.FirstOrDefault(item => item.Id == movie.Id);
+                _allMovieList.Remove(movieToRemove);
+                UpdateList(_allMovieList);
+            });
         }
 
-        public IList<MovieItem> FilterAllUnseenMovies(string namePart, MovieTypes? movieType)
+        public Task<IList<MovieItem>> FilterAllMovies(string namePart, MovieTypes? movieType)
         {
-            return GetAllUnseenMovies().Where(item => String.IsNullOrEmpty(namePart) || item.Title.ToUpper().Contains(namePart.ToUpper())).Where(fType => !movieType.HasValue || fType.Type == movieType.Value).ToList<MovieItem>();
+            return GetListActionTask(() => { return _allMovieList.Where(item => String.IsNullOrEmpty(namePart) || item.Title.ToUpper().Contains(namePart.ToUpper())).Where(fType => !movieType.HasValue || fType.Type == movieType.Value).ToList<MovieItem>(); });
         }
 
-        public IList<MovieItem> GetAllMovies()
+        public Task<IList<MovieItem>> FilterAllUnseenMovies(string namePart, MovieTypes? movieType)
         {
-            List<MovieItem> allMovies = new List<MovieItem>();
-            allMovies = _szHelper.DeSerializeObject<List<MovieItem>>(_storageFile);
-            return allMovies.OrderBy(item => item.Priority).ToList<MovieItem>();
+            return GetListActionTask(() => { return _allMovieList.Where(itemf => !itemf.Seen).Where(item => String.IsNullOrEmpty(namePart) || item.Title.ToUpper().Contains(namePart.ToUpper())).Where(fType => !movieType.HasValue || fType.Type == movieType.Value).ToList<MovieItem>(); });
         }
 
-        public IList<MovieItem> GetAllUnseenMovies()
+        public Task<IList<MovieItem>> GetAllMovies()
         {
-            return _allMovieList.Where(itemf => !itemf.Seen).ToList<MovieItem>();
+            return GetListActionTask(() => { return _allMovieList.OrderBy(item => item.Priority).ToList<MovieItem>(); });
         }
 
-        public bool UpdateItem(MovieItem movie)
+        public Task<IList<MovieItem>> GetAllUnseenMovies()
         {
-            var movieToRemove = _allMovieList.FirstOrDefault(item => item.Id == movie.Id);
-            _allMovieList.Remove(movieToRemove);
-            _allMovieList.Add(movie);
-            return UpdateList(_allMovieList);
+            return GetListActionTask(() => { return _allMovieList.Where(itemf => !itemf.Seen).ToList<MovieItem>();});
         }
 
-        private bool UpdateList(IList<MovieItem> movies)
+        public Task UpdateItem(MovieItem movie)
+        {
+            return GetVoidActionTask(() =>
+            {
+                var movieToRemove = _allMovieList.FirstOrDefault(item => item.Id == movie.Id);
+                _allMovieList.Remove(movieToRemove);
+                _allMovieList.Add(movie);
+                UpdateList(_allMovieList);
+            });
+        }
+
+        private void UpdateList(IList<MovieItem> movies)
         {
             _szHelper.SerializeObject<IList<MovieItem>>(movies, _storageFile);
-            return true;
+        }
+        #endregion Public Methods
+
+        #region Private Methods
+
+        private void ResetCancellation()
+        {
+            if (_cancellationTokenSource != null)
+            {
+                _cancellationTokenSource.Cancel();
+            }
+            _cancellationTokenSource = new CancellationTokenSource();
         }
 
+        private Task<IList<MovieItem>> GetListActionTask(Func<IList<MovieItem>> filterFunction)
+        {
+            ResetCancellation();
+            return Task.Run<IList<MovieItem>>(filterFunction, _cancellationTokenSource.Token);
+        }
+
+        private Task GetVoidActionTask(Action filterFunction)
+        {
+            ResetCancellation();
+
+            return Task.Run(filterFunction, _cancellationTokenSource.Token);
+        }
+
+        private void LoadListFromFile()
+        {
+            _allMovieList = new List<MovieItem>();
+            _allMovieList = _szHelper.DeSerializeObject<List<MovieItem>>(_storageFile);
+        }
         #endregion Methods
+
     }
 }

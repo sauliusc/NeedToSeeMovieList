@@ -46,7 +46,7 @@ namespace MovieList.GUI
             {
                 _activeWindow.Close();
             }
-            else
+            else if (message.WindowAction == WindowAction.AddNew || message.WindowAction == WindowAction.Update)
             {
                 var movieEditViewModel = SimpleIoc.Default.GetInstance<MovieEditViewModel>();
                 movieEditViewModel.EditableItem = message.Context;

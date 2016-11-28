@@ -10,6 +10,7 @@ namespace MovieList.GUI.Navigation
     {
         AddNew,
         Update,
-        Close
+        Close,
+        ReloadDataSource
     }
 }
